@@ -1,31 +1,93 @@
-🛜 WLAN-Diagnose-Tool
-Finde heraus, ob dein WLAN oder dein Internetanbieter schuld ist!
-Dieses einfache Tool protokolliert deine Internetverbindung und hilft dir herauszufinden, warum dein Internet manchmal nicht funktioniert.
-📋 Was macht dieses Tool?
-Das Tool prüft jede Sekunde zwei Dinge:
-Verbindung zum Router → Ist dein WLAN stabil?
-Verbindung ins Internet → Funktioniert die Leitung deines Anbieters?
-Die Ergebnisse werden in einer Datei gespeichert, die du später analysieren kannst.
-🖥️ Voraussetzungen
-Windows 10 oder Windows 11
-Keine Installation nötig – PowerShell ist bereits auf deinem PC!
-📥 Installation & Einrichtung
-Schritt 1: Ordner erstellen
-Öffne den Datei-Explorer (Windows-Taste + E)
-Gehe zu C:\
-Erstelle einen neuen Ordner namens Temp (falls nicht vorhanden)
-Rechtsklick → Neu → Ordner → Temp eingeben
-Schritt 2: Script speichern
-Öffne den Editor (Windows-Taste drücken, "Editor" eintippen, Enter)
-Kopiere das gesamte Script (siehe unten) in den Editor
-Speichere die Datei:
-Datei → Speichern unter
-Speicherort: C:\Temp
-Dateiname: WLAN_Test.ps1
-Dateityp: Alle Dateien (*.*)
-Klicke auf Speichern
-📜 Das Script
-Kopiere diesen Code vollständig:
+# 🛜 Ping-Plotter
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![PowerShell](https://img.shields.io/badge/PowerShell-5.1+-blue.svg)](https://docs.microsoft.com/en-us/powershell/)
+[![Platform](https://img.shields.io/badge/Platform-Windows%2010%2F11-lightgrey.svg)]()
+
+**Finde heraus, ob dein WLAN oder dein Internetanbieter schuld ist!**
+
+Ein einfaches PowerShell-Tool, das deine Internetverbindung protokolliert und dir hilft herauszufinden, warum dein Internet manchmal nicht funktioniert.
+
+---
+
+## 📋 Inhaltsverzeichnis
+
+- [Was macht dieses Tool?](#-was-macht-dieses-tool)
+- [Voraussetzungen](#️-voraussetzungen)
+- [Installation](#-installation--einrichtung)
+- [Nutzung](#️-script-starten)
+- [Ergebnisse verstehen](#-ergebnisse-verstehen)
+- [Daten analysieren](#-daten-analysieren-lassen)
+- [Fehlerbehebung](#️-fehlerbehebung)
+- [FAQ](#-häufige-fragen)
+- [Lizenz](#-lizenz)
+
+---
+
+## 🔍 Was macht dieses Tool?
+
+Das Tool prüft **jede Sekunde** zwei Dinge:
+
+| Test | Was wird geprüft? | Ergebnis |
+|------|-------------------|----------|
+| 🏠 **Router-Ping** | Verbindung von deinem PC zum Router | Ist dein WLAN stabil? |
+| 🌐 **Internet-Ping** | Verbindung vom Router ins Internet | Funktioniert die Leitung deines Anbieters? |
+
+Die Ergebnisse werden automatisch in einer CSV-Datei gespeichert, die du später analysieren kannst.
+
+### So funktioniert die Diagnose
+
+```
+Dein PC  ──────►  Router  ──────►  Internet (8.8.8.8)
+           │                │
+           │                └── Wenn hier Fehler: Anbieter schuld
+           │
+           └── Wenn hier Fehler: WLAN schuld
+```
+
+---
+
+## 🖥️ Voraussetzungen
+
+- ✅ Windows 10 oder Windows 11
+- ✅ PowerShell (bereits vorinstalliert)
+- ✅ Keine zusätzliche Installation nötig!
+
+---
+
+## 📥 Installation & Einrichtung
+
+### Schritt 1: Ordner erstellen
+
+1. Öffne den **Datei-Explorer** (`Windows-Taste` + `E`)
+2. Gehe zu `C:\`
+3. Erstelle einen neuen Ordner namens `Temp`:
+   - Rechtsklick → **Neu** → **Ordner** → `Temp` eingeben
+
+### Schritt 2: Script herunterladen
+
+**Option A: Direkt herunterladen**
+
+Lade die Datei `WLAN_Test.ps1` von diesem Repository herunter und speichere sie in `C:\Temp\`
+
+**Option B: Manuell erstellen**
+
+1. Öffne den **Editor** (`Windows-Taste` → "Editor" eintippen → `Enter`)
+2. Kopiere das Script (siehe unten)
+3. Speichere die Datei:
+   - **Datei** → **Speichern unter**
+   - Speicherort: `C:\Temp`
+   - Dateiname: `WLAN_Test.ps1`
+   - Dateityp: **Alle Dateien (\*.\*)**
+
+---
+
+## 📜 Das Script
+
+<details>
+<summary>📋 Klicke hier um den Code anzuzeigen</summary>
+
+```powershell
 # --- KONFIGURATION ---
 $ExternalTarget = "8.8.8.8"   # Google DNS Server (zuverlässig erreichbar)
 $LogFile = "C:\Temp\WLAN_Log.csv"
@@ -75,81 +137,98 @@ while ($true) {
     
     Start-Sleep -Seconds $IntervalSeconds
 }
-▶️ Script starten
-Methode A: Per Rechtsklick (Empfohlen)
-Öffne den Datei-Explorer
-Gehe zu C:\Temp
-Rechtsklick auf WLAN_Test.ps1
-Wähle Mit PowerShell ausführen
-Methode B: Über PowerShell direkt
-Drücke Windows-Taste + X
-Wähle Terminal oder PowerShell
-Tippe folgenden Befehl und drücke Enter:
+```
+
+</details>
+
+---
+
+## ▶️ Script starten
+
+### Methode A: Per Rechtsklick (Empfohlen)
+
+1. Öffne den **Datei-Explorer**
+2. Gehe zu `C:\Temp`
+3. **Rechtsklick** auf `WLAN_Test.ps1`
+4. Wähle **Mit PowerShell ausführen**
+
+### Methode B: Über PowerShell direkt
+
+1. Drücke `Windows-Taste` + `X`
+2. Wähle **Terminal** oder **PowerShell**
+3. Führe diese Befehle aus:
+
+```powershell
 Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy Bypass -Force
 C:\Temp\WLAN_Test.ps1
-⚠️ Fehlerbehebung
-"Script kann nicht ausgeführt werden"
-Falls du eine rote Fehlermeldung siehst, führe einmalig diesen Befehl in PowerShell aus:
-Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy Bypass -Force
-Danach das Script erneut starten.
-"Zugriff verweigert" auf C:\Temp
-Erstelle den Ordner stattdessen auf deinem Desktop:
-Ändere im Script die Zeile:
-$LogFile = "C:\Temp\WLAN_Log.csv"
-zu:
-$LogFile = "$env:USERPROFILE\Desktop\WLAN_Log.csv"
-⏹️ Script beenden
-Drücke STRG + C im PowerShell-Fenster, um das Logging zu stoppen.
-📊 Ergebnisse verstehen
-Live-Anzeige im Fenster
-Farbe
-Bedeutung
-🟢 Grün
-Alles OK
-🔴 Rot
-Problem erkannt
-Die Log-Datei (CSV)
-Die Ergebnisse werden in C:\Temp\WLAN_Log.csv gespeichert.
-Spalte
-Bedeutung
-Timestamp
-Datum und Uhrzeit der Messung
-Router_Latency_ms
-Antwortzeit deines Routers (WLAN-Qualität)
-Internet_Latency_ms
-Antwortzeit ins Internet (Anbieter-Qualität)
-Status_Fazit
-Automatische Bewertung
-Status-Bedeutungen
-Status
-Was es bedeutet
-Wer ist schuld?
-OK
-Alles funktioniert
-Niemand 😊
-WLAN_SCHWACH
-Router antwortet langsam (>100ms)
-Dein WLAN
-WLAN_ABBRUCH (Lokal)
-Keine Verbindung zum Router
-Dein WLAN
-ISP_AUSFALL (Extern)
-Router OK, aber kein Internet
-Dein Anbieter
-🔍 Daten analysieren lassen
-Nachdem du das Script eine Weile laufen gelassen hast (z.B. über Nacht oder während der Problemzeiten), kannst du die Daten von einer KI analysieren lassen.
-So gehst du vor:
-Öffne die Log-Datei:
-Gehe zu C:\Temp
-Doppelklick auf WLAN_Log.csv (öffnet sich in Excel oder Editor)
-Kopiere den Inhalt:
-Markiere alles (STRG + A)
-Kopiere (STRG + C)
-Nutze diesen Analyse-Prompt:
-Kopiere den folgenden Text und füge deine Daten am Ende ein:
-Du bist ein freundlicher und geduldiger IT-Experte, der einem Laien hilft, Internetprobleme zu verstehen.
+```
 
-Ich habe ein Protokoll (CSV) erstellt, um herauszufinden, ob mein WLAN zu Hause schlecht ist oder ob mein Internetanbieter (ISP) Probleme macht. Bitte analysiere die unten angefügten Daten und gib mir eine für Laien verständliche Zusammenfassung.
+### ⏹️ Script beenden
+
+Drücke `STRG` + `C` im PowerShell-Fenster.
+
+---
+
+## 📊 Ergebnisse verstehen
+
+### Live-Anzeige im Fenster
+
+| Farbe | Bedeutung |
+|-------|-----------|
+| 🟢 **Grün** | Alles OK |
+| 🔴 **Rot** | Problem erkannt |
+
+### Die Log-Datei
+
+Die Ergebnisse werden in `C:\Temp\WLAN_Log.csv` gespeichert:
+
+| Spalte | Bedeutung |
+|--------|-----------|
+| `Timestamp` | Datum und Uhrzeit der Messung |
+| `Router_Latency_ms` | Antwortzeit deines Routers (WLAN-Qualität) |
+| `Internet_Latency_ms` | Antwortzeit ins Internet (Anbieter-Qualität) |
+| `Status_Fazit` | Automatische Bewertung |
+
+### Status-Bedeutungen
+
+| Status | Was es bedeutet | Wer ist schuld? |
+|--------|-----------------|-----------------|
+| `OK` | Alles funktioniert | Niemand 😊 |
+| `WLAN_SCHWACH` | Router antwortet langsam (>100ms) | 🏠 Dein WLAN |
+| `WLAN_ABBRUCH (Lokal)` | Keine Verbindung zum Router | 🏠 Dein WLAN |
+| `ISP_AUSFALL (Extern)` | Router OK, aber kein Internet | 🌐 Dein Anbieter |
+
+---
+
+## 🔍 Daten analysieren lassen
+
+Nachdem du das Script eine Weile laufen gelassen hast (z.B. über Nacht), kannst du die Daten analysieren lassen.
+
+### So gehst du vor
+
+1. **Öffne die Log-Datei:**
+   - Gehe zu `C:\Temp`
+   - Doppelklick auf `WLAN_Log.csv` (öffnet sich in Excel oder Editor)
+
+2. **Kopiere den Inhalt:**
+   - Markiere alles (`STRG` + `A`)
+   - Kopiere (`STRG` + `C`)
+
+3. **Nutze den Analyse-Prompt:**
+
+<details>
+<summary>📋 Klicke hier für den kompletten Analyse-Prompt</summary>
+
+Kopiere den folgenden Text und füge deine Daten am Ende ein:
+
+```
+Du bist ein freundlicher und geduldiger IT-Experte, der einem Laien hilft, 
+Internetprobleme zu verstehen.
+
+Ich habe ein Protokoll (CSV) erstellt, um herauszufinden, ob mein WLAN zu 
+Hause schlecht ist oder ob mein Internetanbieter (ISP) Probleme macht. 
+Bitte analysiere die unten angefügten Daten und gib mir eine für Laien 
+verständliche Zusammenfassung.
 
 Hier ist der Aufbau der Daten:
 - Spalte "Router_Latency_ms": Das ist die Verbindung von meinem Laptop zum Router (WLAN).
@@ -157,40 +236,124 @@ Hier ist der Aufbau der Daten:
 - "TIMEOUT" bedeutet, die Verbindung war komplett weg.
 
 Bitte befolge diese Logik bei der Analyse:
-1. Wenn "Router_Latency_ms" TIMEOUT zeigt oder sehr hoch ist (>100ms), dann ist mein WLAN das Problem (Signal zu schwach, Störung).
-2. Wenn "Router_Latency_ms" niedrig ist (z.B. <10ms), aber "Internet_Latency_ms" TIMEOUT zeigt, dann liegt das Problem beim Internetanbieter (Kabel/Leitung draußen).
+1. Wenn "Router_Latency_ms" TIMEOUT zeigt oder sehr hoch ist (>100ms), 
+   dann ist mein WLAN das Problem (Signal zu schwach, Störung).
+2. Wenn "Router_Latency_ms" niedrig ist (z.B. <10ms), aber "Internet_Latency_ms" 
+   TIMEOUT zeigt, dann liegt das Problem beim Internetanbieter (Kabel/Leitung draußen).
 
 Bitte erstelle mir folgende Auswertung:
+
 1. **Zusammenfassung:** Wie stabil war die Verbindung insgesamt? Gab es viele Ausfälle?
-2. **Der Schuldige:** Liegt es am WLAN oder am Anbieter? (Nenne eine Prozentzahl, z.B. "Zu 90% liegt es am WLAN").
+2. **Der Schuldige:** Liegt es am WLAN oder am Anbieter? (Nenne eine Prozentzahl)
 3. **Zeitpunkte:** Wann waren die schlimmsten Ausfälle?
-4. **Nächste Schritte:** Was soll ich tun? (z.B. "Router umstellen" vs. "Beim Anbieter anrufen und sagen, dass das Modem die Verbindung verliert").
+4. **Nächste Schritte:** Was soll ich tun?
 
 Antworte bitte einfach, ohne Fachbegriffe, aber präzise.
 
 HIER SIND DIE DATEN:
 [Füge hier den Inhalt der CSV-Datei ein]
-💡 Tipps für gute Ergebnisse
-Lass das Script mindestens 1-2 Stunden laufen – besser über Nacht
-Starte es, wenn Probleme auftreten – dann siehst du die Ausfälle
-Der Laptop sollte dort stehen, wo du normalerweise surfst
-Schließe den Laptop nicht – das unterbricht das Logging
-❓ Häufige Fragen
-Verbraucht das Script viel Strom oder Leistung?
-Nein, es ist sehr ressourcenschonend.
-Kann ich meinen PC normal weiter benutzen?
-Ja! Das Script läuft im Hintergrund.
-Wie groß wird die Log-Datei?
-Ca. 1 MB pro Tag – also kein Problem.
-Funktioniert das auch mit LAN-Kabel?
+```
+
+</details>
+
+---
+
+## ⚠️ Fehlerbehebung
+
+### "Script kann nicht ausgeführt werden"
+
+Falls du eine rote Fehlermeldung siehst, führe **einmalig** diesen Befehl in PowerShell aus:
+
+```powershell
+Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy Bypass -Force
+```
+
+Danach das Script erneut starten.
+
+### "Zugriff verweigert" auf C:\Temp
+
+Ändere im Script den Speicherort auf deinen Desktop:
+
+```powershell
+# Vorher:
+$LogFile = "C:\Temp\WLAN_Log.csv"
+
+# Nachher:
+$LogFile = "$env:USERPROFILE\Desktop\WLAN_Log.csv"
+```
+
+---
+
+## 💡 Tipps für gute Ergebnisse
+
+- ⏱️ Lass das Script **mindestens 1-2 Stunden** laufen – besser über Nacht
+- 🎯 Starte es, **wenn Probleme auftreten** – dann siehst du die Ausfälle
+- 📍 Der Laptop sollte dort stehen, **wo du normalerweise surfst**
+- 💻 Schließe den Laptop **nicht** – das unterbricht das Logging
+
+---
+
+## ❓ Häufige Fragen
+
+<details>
+<summary><strong>Verbraucht das Script viel Strom oder Leistung?</strong></summary>
+
+Nein, es ist sehr ressourcenschonend. Du wirst keinen Unterschied merken.
+</details>
+
+<details>
+<summary><strong>Kann ich meinen PC normal weiter benutzen?</strong></summary>
+
+Ja! Das Script läuft im Hintergrund und stört nicht.
+</details>
+
+<details>
+<summary><strong>Wie groß wird die Log-Datei?</strong></summary>
+
+Ca. 1 MB pro Tag – also kein Problem, selbst bei längerer Nutzung.
+</details>
+
+<details>
+<summary><strong>Funktioniert das auch mit LAN-Kabel?</strong></summary>
+
 Ja! Dann testet es deine Kabelverbindung statt WLAN.
-📞 Support beim Anbieter
-Falls die Analyse zeigt, dass dein Anbieter schuld ist, hier ein Beispieltext für den Anruf:
-"Guten Tag, ich habe Verbindungsabbrüche dokumentiert. Mein WLAN zum Router funktioniert einwandfrei (Ping unter 10ms), aber die Verbindung ins Internet bricht regelmäßig ab. Die Ausfälle treten besonders um [UHRZEIT] auf. Können Sie bitte die Leitung prüfen?"
-🌐 GitHub Repository
-⭐ GitHub: m0h1nd4/ping-plotter
-Fehler gefunden? Verbesserungsvorschläge? Erstelle gerne ein Issue oder einen Pull Request!
-📄 Lizenz
-Dieses Projekt steht unter der MIT-Lizenz – du darfst es frei verwenden, verändern und weitergeben.
-Siehe LICENSE für Details.
-Erstellt für Windows 11 • Version 1.0
+</details>
+
+<details>
+<summary><strong>Kann ich das Intervall ändern?</strong></summary>
+
+Ja! Ändere im Script die Zeile `$IntervalSeconds = 1` auf deinen gewünschten Wert (in Sekunden).
+</details>
+
+---
+
+## 📞 Support beim Anbieter
+
+Falls die Analyse zeigt, dass dein **Anbieter schuld ist**, hier ein Beispieltext für den Anruf:
+
+> *"Guten Tag, ich habe Verbindungsabbrüche dokumentiert. Mein WLAN zum Router funktioniert einwandfrei (Ping unter 10ms), aber die Verbindung ins Internet bricht regelmäßig ab. Die Ausfälle treten besonders um [UHRZEIT] auf. Können Sie bitte die Leitung prüfen?"*
+
+---
+
+## 🤝 Mitmachen
+
+Fehler gefunden? Verbesserungsvorschläge?
+
+- 🐛 [Issue erstellen](https://github.com/m0h1nd4/ping-plotter/issues)
+- 🔧 Pull Request einreichen
+- ⭐ Projekt mit einem Stern unterstützen!
+
+---
+
+## 📄 Lizenz
+
+Dieses Projekt steht unter der **MIT-Lizenz** – du darfst es frei verwenden, verändern und weitergeben.
+
+Siehe [LICENSE](LICENSE) für Details.
+
+---
+
+<p align="center">
+  <strong>Erstellt für Windows 10/11 • Version 1.0</strong><br>
+  <a href="https://github.com/m0h1nd4/ping-plotter">⭐ GitHub: m0h1nd4/ping-plotter</a>
+</p>
